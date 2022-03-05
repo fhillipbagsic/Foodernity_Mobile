@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Notifications extends StatefulWidget {
@@ -10,8 +11,24 @@ class Notifications extends StatefulWidget {
 class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: Text('notif')),
+    return FutureBuilder(
+      builder: ((context, snapshot) {
+        Widget announcementSliverList;
+        if (snapshot.hasData) {
+        } else {
+          announcementSliverList = const SliverToBoxAdapter(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        return const CustomScrollView(
+          slivers: [
+            CupertinoSliverNavigationBar(
+              automaticallyImplyLeading: false,
+              largeTitle: Text('Notifications'),
+            )
+          ],
+        );
+      }),
     );
   }
 }
