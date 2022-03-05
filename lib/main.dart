@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodernity_mobile/Pages/Signinup/Signup.dart';
+import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         home: Sizer(builder: ((context, orientation, deviceType) {
           return const Scaffold(
             body: SafeArea(
-              child: Signup(),
+              child: Signin(),
             ),
           );
         })));

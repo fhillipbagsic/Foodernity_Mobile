@@ -19,58 +19,64 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: double.infinity,
-        color: Colors.blue,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h),
-              child: Text(
-                'Sign up to Foodernity',
-                textAlign: TextAlign.center,
-                style: TextStyle(
+    return Scaffold(
+      body: Container(
+          width: double.infinity,
+          color: Colors.blue,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: Text(
+                  'Sign up to Foodernity',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.sp),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 5.h),
+                  decoration: const BoxDecoration(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.sp),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 5.h),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                    topLeft: Radius.circular(20.0),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20.0),
+                      topLeft: Radius.circular(20.0),
+                    ),
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        _field('Full Name', fullNameController),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        _field('Email Address', emailAddressController),
+                        _field('Password', passwordController),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        _confirmPasswordField(),
+                        _agreement(),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        _signupButton(),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        _hasAccount()
+                      ],
+                    ),
                   ),
                 ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      _field('Full Name', fullNameController),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      _field('Email Address', emailAddressController),
-                      _field('Password', passwordController),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      _confirmPasswordField(),
-                      _agreement(),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      _signupButton()
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ));
+              )
+            ],
+          )),
+    );
   }
 
   Widget _field(
@@ -83,7 +89,7 @@ class _SignupState extends State<Signup> {
       validator: fieldName == 'Full Name'
           ? fullNameValidator
           : fieldName == 'Email Address'
-              ? emailValidator
+              ? emailAddressValidator
               : passwordValidator,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
@@ -91,9 +97,9 @@ class _SignupState extends State<Signup> {
         helperText: getHelperText(fieldName),
         suffixIcon: IconButton(
           onPressed: () => controller.clear(),
-          icon: const Icon(
+          icon: Icon(
             Icons.clear,
-            size: 15.0,
+            size: 13.sp,
           ),
         ),
       ),
@@ -113,9 +119,9 @@ class _SignupState extends State<Signup> {
         helperText: getHelperText('Confirm Password'),
         suffixIcon: IconButton(
           onPressed: () => confirmPasswordController.clear(),
-          icon: const Icon(
+          icon: Icon(
             Icons.clear,
-            size: 15.0,
+            size: 13.sp,
           ),
         ),
       ),
@@ -129,16 +135,16 @@ class _SignupState extends State<Signup> {
     MinLengthValidator(3, errorText: 'Please enter your full name')
   ]);
 
-  final emailValidator = MultiValidator([
+  final emailAddressValidator = MultiValidator([
     RequiredValidator(errorText: "Email address is required"),
     EmailValidator(errorText: "Enter valid email address"),
   ]);
 
   final passwordValidator = MultiValidator([
-    RequiredValidator(errorText: 'password is required'),
-    MinLengthValidator(8, errorText: 'password must be at least 8 digits long'),
+    RequiredValidator(errorText: 'Password is required'),
+    MinLengthValidator(8, errorText: 'Password must be at least 8 digits long'),
     PatternValidator(r'^[a-zA-Z0-9]+$',
-        errorText: 'passwords must not have special character')
+        errorText: 'Password must not have special character')
   ]);
 
   String getHelperText(String fieldName) {
@@ -177,8 +183,32 @@ class _SignupState extends State<Signup> {
                 .showSnackBar(const SnackBar(content: Text('Signing up')));
           }
         },
-        child: const Text('Sign up'),
+        child: const Text('SIGN UP'),
       ),
+    );
+  }
+
+  Widget _hasAccount() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Already have an account? ",
+          style: TextStyle(color: Colors.grey, fontSize: 11.sp),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Text(
+            "Sign in here",
+            style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+                fontSize: 11.sp),
+          ),
+        ),
+      ],
     );
   }
 }
