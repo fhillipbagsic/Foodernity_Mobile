@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodernity_mobile/Pages/Home.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
 import 'package:sizer/sizer.dart';
 
@@ -17,11 +18,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: Sizer(builder: ((context, orientation, deviceType) {
-          return const Scaffold(
-            body: SafeArea(
-              child: Signin(),
-            ),
-          );
+          return const Home();
         })));
   }
 }

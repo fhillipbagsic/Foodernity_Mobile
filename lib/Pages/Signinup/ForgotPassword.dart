@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:sizer/sizer.dart';
@@ -65,7 +66,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(
                       height: 3.h,
                     ),
-                    _sendCodeButton()
+                    _sendCodeButton(),
+                    _backButton()
                   ],
                 ),
               )
@@ -92,6 +94,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           }
         },
         child: Text('SEND CODE', style: TextStyle(fontSize: 11.sp)),
+      ),
+    );
+  }
+
+  Widget _backButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text('BACK TO SIGNIN', style: TextStyle(fontSize: 11.sp)),
       ),
     );
   }
