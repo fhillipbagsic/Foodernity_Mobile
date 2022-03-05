@@ -20,13 +20,16 @@ class _AnnouncementState extends State<Announcement> {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        return const CustomScrollView(
-          slivers: [
-            CupertinoSliverNavigationBar(
-              automaticallyImplyLeading: false,
-              largeTitle: Text('Announcements'),
-            )
-          ],
+        return Container(
+          color: Colors.grey[200],
+          child: const CustomScrollView(
+            slivers: [
+              CupertinoSliverNavigationBar(
+                automaticallyImplyLeading: false,
+                largeTitle: Text('Announcements'),
+              )
+            ],
+          ),
         );
       }),
     );

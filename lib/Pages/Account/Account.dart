@@ -20,13 +20,16 @@ class _AccountState extends State<Account> {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        return const CustomScrollView(
-          slivers: [
-            CupertinoSliverNavigationBar(
-              automaticallyImplyLeading: false,
-              largeTitle: Text('My Account'),
-            )
-          ],
+        return Container(
+          color: Colors.grey[200],
+          child: const CustomScrollView(
+            slivers: [
+              CupertinoSliverNavigationBar(
+                automaticallyImplyLeading: false,
+                largeTitle: Text('My Account'),
+              )
+            ],
+          ),
         );
       }),
     );

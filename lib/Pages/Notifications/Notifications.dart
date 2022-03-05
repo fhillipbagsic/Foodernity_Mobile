@@ -20,13 +20,16 @@ class _NotificationsState extends State<Notifications> {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        return const CustomScrollView(
-          slivers: [
-            CupertinoSliverNavigationBar(
-              automaticallyImplyLeading: false,
-              largeTitle: Text('Notifications'),
-            )
-          ],
+        return Container(
+          color: Colors.grey[200],
+          child: const CustomScrollView(
+            slivers: [
+              CupertinoSliverNavigationBar(
+                automaticallyImplyLeading: false,
+                largeTitle: Text('Notifications'),
+              )
+            ],
+          ),
         );
       }),
     );

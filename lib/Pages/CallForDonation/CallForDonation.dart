@@ -20,12 +20,15 @@ class _CallForDonationState extends State<CallForDonation> {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        return const CustomScrollView(
-          slivers: [
-            CupertinoSliverNavigationBar(
-                automaticallyImplyLeading: false,
-                largeTitle: Text('Call for Donations'))
-          ],
+        return Container(
+          color: Colors.grey[200],
+          child: const CustomScrollView(
+            slivers: [
+              CupertinoSliverNavigationBar(
+                  automaticallyImplyLeading: false,
+                  largeTitle: Text('Call for Donations'))
+            ],
+          ),
         );
       }),
     );

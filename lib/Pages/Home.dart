@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodernity_mobile/Pages/Account/Account.dart';
 import 'package:foodernity_mobile/Pages/Announcement/Announcement.dart';
 import 'package:foodernity_mobile/Pages/CallForDonation/CallForDonation.dart';
+import 'package:foodernity_mobile/Pages/MakeDonation/Guidelines.dart';
 import 'package:foodernity_mobile/Pages/Notifications/Notifications.dart';
 
 class Home extends StatefulWidget {
@@ -42,7 +43,12 @@ class _HomeState extends State<Home> {
           ]),
       floatingActionButton: _currentIndex == 1
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Guidelines()));
+              },
               child: const Icon(Icons.add),
             )
           : null,
