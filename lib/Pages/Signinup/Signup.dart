@@ -107,6 +107,7 @@ class _SignupState extends State<Signup> {
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: fieldName,
+        labelStyle: TextStyle(fontSize: 12.sp),
         helperText: getHelperText(fieldName),
         suffixIcon: IconButton(
           onPressed: () => controller.clear(),
@@ -129,6 +130,7 @@ class _SignupState extends State<Signup> {
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: 'Confirm Password',
+        labelStyle: TextStyle(fontSize: 12.sp),
         helperText: getHelperText('Confirm Password'),
         suffixIcon: IconButton(
           onPressed: () => confirmPasswordController.clear(),

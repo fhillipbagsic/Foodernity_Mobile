@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodernity_mobile/Classes/Item.dart';
-import 'package:foodernity_mobile/Pages/MakeDonation/MakeDonation.dart';
+import 'package:foodernity_mobile/Pages/MakeDonation/MakeaDonation.dart';
 import 'package:sizer/sizer.dart';
 
 class Guidelines extends StatefulWidget {

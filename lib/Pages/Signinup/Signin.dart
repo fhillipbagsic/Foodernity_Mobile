@@ -102,6 +102,7 @@ class _SigninState extends State<Signin> {
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: fieldName,
+        labelStyle: TextStyle(fontSize: 12.sp),
         suffixIcon: IconButton(
           onPressed: () => controller.clear(),
           icon: Icon(
