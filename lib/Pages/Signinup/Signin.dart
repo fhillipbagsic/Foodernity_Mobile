@@ -19,69 +19,73 @@ class _SigninState extends State<Signin> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Colors.blue,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
-            child: Text(
-              'Sign up to Foodernity',
-              textAlign: TextAlign.center,
-              style: TextStyle(
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          color: Colors.blue,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: Text(
+                  'Sign up to Foodernity',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.sp),
+                ),
+              ),
+              Expanded(
+                  child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 5.h),
+                decoration: const BoxDecoration(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.sp),
-            ),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20.0),
+                    topLeft: Radius.circular(20.0),
+                  ),
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      _field('Email Address', emailAddressController),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      _field('Password', passwordController),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      _forgotPassword(),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      _signinButton(),
+                      SizedBox(
+                        height: 1.5.h,
+                      ),
+                      const Text(
+                        'or',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(
+                        height: 1.5.h,
+                      ),
+                      _googleSigninButton(),
+                      SizedBox(
+                        height: 4.h,
+                      ),
+                      _noAccount()
+                    ],
+                  ),
+                ),
+              ))
+            ],
           ),
-          Expanded(
-              child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 5.h),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20.0),
-                topLeft: Radius.circular(20.0),
-              ),
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _field('Email Address', emailAddressController),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  _field('Password', passwordController),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  _forgotPassword(),
-                  SizedBox(
-                    height: 3.h,
-                  ),
-                  _signinButton(),
-                  SizedBox(
-                    height: 1.5.h,
-                  ),
-                  const Text(
-                    'or',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  SizedBox(
-                    height: 1.5.h,
-                  ),
-                  _googleSigninButton(),
-                  SizedBox(
-                    height: 4.h,
-                  ),
-                  _noAccount()
-                ],
-              ),
-            ),
-          ))
-        ],
+        ),
       ),
     );
   }

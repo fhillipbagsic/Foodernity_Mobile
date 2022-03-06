@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:foodernity_mobile/Services/Signinup.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,6 +15,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  String signupError = '';
   final _formKey = GlobalKey<FormState>();
 
   var fullNameController = TextEditingController();
@@ -63,6 +69,13 @@ class _SignupState extends State<Signup> {
                         _agreement(),
                         SizedBox(
                           height: 3.h,
+                        ),
+                        Text(
+                          signupError,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        SizedBox(
+                          height: 1.h,
                         ),
                         _signupButton(),
                         SizedBox(
@@ -174,13 +187,39 @@ class _SignupState extends State<Signup> {
   }
 
   Widget _signupButton() {
+    void postSignup() async {
+      Response response;
+      response = await SignupService().signup(fullNameController.text,
+          emailAddressController.text, passwordController.text);
+
+      if (response.data == 'Success') {
+        //final prefs = await SharedPreferences.getInstance();
+        //await prefs.setString('emailAddress', emailAddressController.text);
+        signupError = '';
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 1),
+            content: Text(
+              'Signing up',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+        Timer(const Duration(seconds: 2), () => Navigator.pop(context));
+      } else if (response.data == 'Taken') {
+        signupError = 'Email already taken';
+      } else {
+        signupError = 'Something has occurred. Please restart application';
+      }
+      setState(() {});
+    }
+
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('Signing up')));
+            postSignup();
           }
         },
         child: const Text('SIGN UP'),

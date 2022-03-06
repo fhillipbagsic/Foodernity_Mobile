@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodernity_mobile/Pages/Home.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+const String URL = 'http://localhost:3001/';
+//final String herokuURL = 'http://foodernity-server.herokuapp.com/';
 void main() {
   runApp(MaterialApp(
     home: MyApp(),
@@ -25,8 +28,11 @@ class _MyAppState extends State<MyApp> {
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  String emailAddress = '';
 
   Future<void> initConnectivity() async {
+    //final prefs = await SharedPreferences.getInstance();
+    //emailAddress = prefs.getString('emailAddress')!;
     late ConnectivityResult result;
 
     try {
@@ -69,7 +75,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         home: Sizer(builder: ((context, orientation, deviceType) {
-          return const Home();
+          return emailAddress == '' ? const Signin() : const Home();
         })));
   }
 
