@@ -1,23 +1,37 @@
-// ignore: file_names
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:foodernity_mobile/Pages/Signinup/EnterCode.dart';
 import 'package:foodernity_mobile/Pages/Signinup/ResetPassword.dart';
+import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
 import 'package:foodernity_mobile/Services/Signinup.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:sizer/sizer.dart';
 
-class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
+class EnterCode extends StatefulWidget {
+  final String emailAddress;
+
+  const EnterCode({Key? key, required this.emailAddress}) : super(key: key);
 
   @override
-  State<ForgotPassword> createState() => _ForgotPasswordState();
+  State<EnterCode> createState() => _EnterCodeState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
-  String forgotPasswordError = '';
+class _EnterCodeState extends State<EnterCode> {
+  String codeError = '';
+
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailAddressController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
+
+  String maskEmailAddress(String emailAddress) {
+    String front = emailAddress.substring(0, 3);
+    String asterisks = '';
+
+    for (int i = 0; i < emailAddress.length - 7; i++) {
+      asterisks += '*';
+    }
+    String end = emailAddress.substring(emailAddress.length - 4);
+
+    return front + asterisks + end;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +43,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Reset your password',
+                'Enter code',
                 style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
@@ -39,7 +53,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 height: 1.h,
               ),
               Text(
-                'Enter the Email associated with your account and we\'ll send a code with instructions to reset your password.',
+                'A verification code has been to your email address: ' +
+                    maskEmailAddress(widget.emailAddress) +
+                    '. Please enter the code to continue.',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 12.sp,
@@ -48,13 +64,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               SizedBox(
                 height: 3.h,
               ),
-              forgotPasswordError == ''
+              codeError == ''
                   ? const SizedBox()
                   : Container(
                       width: double.infinity,
                       margin: EdgeInsets.only(bottom: 3.h),
                       child: Text(
-                        forgotPasswordError,
+                        codeError,
                         style: const TextStyle(color: Colors.red),
                         textAlign: TextAlign.center,
                       ),
@@ -64,14 +80,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: emailAddressController,
-                      validator: emailAddressValidator,
+                      controller: codeController,
+                      validator: codeValidator,
                       autocorrect: false,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
-                        labelText: 'Email Address',
+                        labelText: 'Code',
                         suffixIcon: IconButton(
-                          onPressed: () => emailAddressController.clear(),
+                          onPressed: () => codeController.clear(),
                           icon: Icon(
                             Icons.clear,
                             size: 13.sp,
@@ -82,7 +98,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(
                       height: 3.h,
                     ),
-                    _sendCodeButton(),
+                    _confirmCodeButton(),
                     _backButton()
                   ],
                 ),
@@ -94,27 +110,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 
-  final emailAddressValidator = MultiValidator([
-    RequiredValidator(errorText: "Email address is required"),
-    EmailValidator(errorText: "Enter valid email address"),
-  ]);
-
-  Widget _sendCodeButton() {
-    void postForgotPassword() async {
+  Widget _confirmCodeButton() {
+    void postConfirmCode() async {
       Response response;
-      response =
-          await SignupService().forgotpassword(emailAddressController.text);
+
+      response = await SignupService()
+          .confirmCode(widget.emailAddress, codeController.text);
 
       if (response.data['status'] == 'error') {
-        forgotPasswordError = response.data['value'];
+        codeError = response.data['value'];
       } else {
-        forgotPasswordError = '';
+        codeError = '';
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EnterCode(
-              emailAddress: emailAddressController.text,
-            ),
+            builder: (context) =>
+                ResetPassword(emailAddress: widget.emailAddress),
           ),
         );
       }
@@ -126,10 +137,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            postForgotPassword();
+            postConfirmCode();
           }
         },
-        child: Text('SEND CODE', style: TextStyle(fontSize: 11.sp)),
+        child: Text('CONFIRM CODE', style: TextStyle(fontSize: 11.sp)),
       ),
     );
   }
@@ -139,10 +150,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.popUntil(context, (route) => route.isFirst);
         },
         child: Text('BACK TO SIGNIN', style: TextStyle(fontSize: 11.sp)),
       ),
     );
   }
+
+  final codeValidator = MultiValidator([
+    RequiredValidator(errorText: "Please enter the code"),
+    MinLengthValidator(6, errorText: 'Code must be at least 6 digits long'),
+  ]);
 }

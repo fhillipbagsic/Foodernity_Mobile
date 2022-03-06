@@ -104,6 +104,7 @@ class _SignupState extends State<Signup> {
           : fieldName == 'Email Address'
               ? emailAddressValidator
               : passwordValidator,
+      autocorrect: false,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: fieldName,
@@ -127,6 +128,7 @@ class _SignupState extends State<Signup> {
       validator: (val) => MatchValidator(errorText: 'Passwords do not match')
           .validateMatch(
               confirmPasswordController.text, passwordController.text),
+      autocorrect: false,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: 'Confirm Password',
@@ -194,9 +196,10 @@ class _SignupState extends State<Signup> {
       response = await SignupService().signup(fullNameController.text,
           emailAddressController.text, passwordController.text);
 
-      if (response.data == 'Success') {
-        //final prefs = await SharedPreferences.getInstance();
-        //await prefs.setString('emailAddress', emailAddressController.text);
+      print(response.data);
+      if (response.data['status'] == 'error') {
+        signupError = response.data['value'];
+      } else {
         signupError = '';
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -208,10 +211,6 @@ class _SignupState extends State<Signup> {
           ),
         );
         Timer(const Duration(seconds: 2), () => Navigator.pop(context));
-      } else if (response.data == 'Taken') {
-        signupError = 'Email already taken';
-      } else {
-        signupError = 'Something has occurred. Please restart application';
       }
       setState(() {});
     }

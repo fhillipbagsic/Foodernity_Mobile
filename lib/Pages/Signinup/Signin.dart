@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foodernity_mobile/Pages/Signinup/ForgotPassword.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signup.dart';
+import 'package:foodernity_mobile/Services/Signinup.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:sizer/sizer.dart';
 
@@ -13,9 +15,10 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
+  String signinError = '';
   final _formKey = GlobalKey<FormState>();
-  var emailAddressController = TextEditingController();
-  var passwordController = TextEditingController();
+  TextEditingController emailAddressController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,15 @@ class _SigninState extends State<Signin> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      signinError == ''
+                          ? const SizedBox()
+                          : Text(
+                              signinError,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
                       _field('Email Address', emailAddressController),
                       SizedBox(
                         height: 2.h,
@@ -99,6 +111,7 @@ class _SigninState extends State<Signin> {
       validator: fieldName == 'Email Address'
           ? emailAddressValidator
           : passwordValidator,
+      autocorrect: false,
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         labelText: fieldName,
@@ -151,13 +164,38 @@ class _SigninState extends State<Signin> {
   }
 
   Widget _signinButton() {
+    void postSignin() async {
+      Response response;
+      response = await SignupService()
+          .signin(emailAddressController.text, passwordController.text);
+      if (response.data['status'] == 'error') {
+        signinError = response.data['value'];
+      } else {
+        signinError = '';
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 1),
+            content: Text(
+              'Signing up',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+        print(response.data['value']);
+        //Timer(const Duration(seconds: 2), () => Navigator.pop(context));
+      }
+      setState(() {});
+    }
+
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('Signing up')));
+            postSignin();
+            // ScaffoldMessenger.of(context)
+            //     .showSnackBar(const SnackBar(content: Text('Signing in')));
+
           }
         },
         child: Text('SIGN IN', style: TextStyle(fontSize: 11.sp)),
