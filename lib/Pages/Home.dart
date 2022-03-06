@@ -32,12 +32,13 @@ class _HomeState extends State<Home> {
           onTap: onTabTapped,
           items: const [
             BottomNavigationBarItem(
-                icon: Icon(Icons.notifications), label: 'Notifications'),
+                icon: Icon(Icons.notifications_rounded),
+                label: 'Notifications'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_basket_rounded),
-                label: 'Announcements'),
+                icon: Icon(Icons.food_bank_rounded), label: 'Announcements'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.food_bank), label: 'Call For Donations'),
+                icon: Icon(Icons.announcement_rounded),
+                label: 'Call For Donations'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle), label: 'Account'),
           ]),
@@ -57,7 +58,6 @@ class _HomeState extends State<Home> {
 
   int onTabTapped(int index) {
     setState(() => _currentIndex = index);
-    print(index);
     return _currentIndex;
   }
 }
