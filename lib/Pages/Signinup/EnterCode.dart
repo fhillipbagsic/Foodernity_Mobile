@@ -17,7 +17,6 @@ class EnterCode extends StatefulWidget {
 
 class _EnterCodeState extends State<EnterCode> {
   String codeError = '';
-
   final _formKey = GlobalKey<FormState>();
   TextEditingController codeController = TextEditingController();
 

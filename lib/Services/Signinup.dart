@@ -48,4 +48,14 @@ class SignupService {
       print(e.message);
     }
   }
+
+  resetPassword(String emailAddress, String password) async {
+    try {
+      return await dio.post(URL + 'resetpassword',
+          data: {'emailAddress': emailAddress, 'password': password},
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
 }

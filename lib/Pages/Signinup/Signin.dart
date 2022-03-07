@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:foodernity_mobile/Pages/Home.dart';
 import 'package:foodernity_mobile/Pages/Signinup/ForgotPassword.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signup.dart';
 import 'package:foodernity_mobile/Services/Signinup.dart';
@@ -174,15 +177,23 @@ class _SigninState extends State<Signin> {
         signinError = '';
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            duration: Duration(seconds: 1),
+            duration: Duration(milliseconds: 500),
             content: Text(
-              'Signing up',
+              'Signing in',
               textAlign: TextAlign.center,
             ),
           ),
         );
         print(response.data['value']);
-        //Timer(const Duration(seconds: 2), () => Navigator.pop(context));
+        //RESET TOKEN ON LOGOUT
+        Timer(
+            const Duration(seconds: 1),
+            () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const Home()),
+                  ),
+                ));
       }
       setState(() {});
     }
