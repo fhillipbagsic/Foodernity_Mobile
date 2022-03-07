@@ -1,13 +1,9 @@
 import 'dart:async';
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodernity_mobile/Pages/Home.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 

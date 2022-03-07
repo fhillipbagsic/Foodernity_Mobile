@@ -12,6 +12,12 @@ class Guidelines extends StatefulWidget {
 }
 
 class _GuidelinesState extends State<Guidelines> {
+  final List<Item> _questions = [
+    Item(
+        expandedValue: 'answer 1',
+        headerValue: 'Question 1',
+        subtitleValue: 'subtitle')
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +30,7 @@ class _GuidelinesState extends State<Guidelines> {
                 largeTitle: Text('Guidelines'),
               ),
               _description(),
-              _guidelines(),
+              _buildPanel(),
               _proceedButton()
             ],
           ),
@@ -38,55 +44,74 @@ class _GuidelinesState extends State<Guidelines> {
         "Before proceeding to make a donation, you must adhere to the guidelines first to protect you and the safety of the others as we. The guidelines to acknowledge are as follows:";
     return SliverToBoxAdapter(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
         child: Text(
           description,
-          textAlign: TextAlign.justify,
+          // textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 12.sp),
         ),
       ),
     );
   }
 
-  List<Item> guidelinesList() {
-    return [Item(headerValue: 'h1', expandedValue: 'e1')];
-  }
-
-  Widget _guidelines() {
+  Widget _buildPanel() {
     return SliverToBoxAdapter(
-      child: ExpansionPanelList(
-        expansionCallback: ((index, isExpanded) {
-          setState(() {
-            guidelinesList()[index].isExpanded = true;
-          });
-        }),
-        children: guidelinesList().map((guideline) {
-          return ExpansionPanel(
-              headerBuilder: ((context, isExpanded) {
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+        child: ExpansionPanelList(
+          expansionCallback: (int index, bool isExpanded) {
+            setState(() {
+              _questions[index].isExpanded = !isExpanded;
+            });
+          },
+          children: _questions.map<ExpansionPanel>((Item item) {
+            return ExpansionPanel(
+              headerBuilder: (BuildContext context, bool isExpanded) {
                 return ListTile(
-                  title: Text(guideline.headerValue),
+                  title: Text(item.headerValue),
                 );
-              }),
+              },
               body: ListTile(
-                title: Text(guideline.expandedValue),
+                title: Text(item.expandedValue),
+                subtitle: Text(item.subtitleValue),
               ),
-              isExpanded: false);
-        }).toList(),
+              isExpanded: item.isExpanded,
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 
   Widget _proceedButton() {
     return SliverToBoxAdapter(
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const MakeDonation()));
-          },
-          child: Text('PROCEED', style: TextStyle(fontSize: 11.sp)),
-        ),
-      ),
+      child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 3.h,
+              ),
+              Text(
+                'By clicking',
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MakeDonation()));
+                },
+                child: Text('I AGREE', style: TextStyle(fontSize: 11.sp)),
+              ),
+            ],
+          )),
     );
   }
 }

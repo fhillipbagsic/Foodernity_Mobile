@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodernity_mobile/Classes/Account.dart';
+import 'package:foodernity_mobile/Pages/Account/FAQ.dart';
 import 'package:foodernity_mobile/Pages/Account/MyDonations.dart';
 import 'package:foodernity_mobile/Pages/Account/Profile.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
@@ -130,7 +131,7 @@ class _MyAccountState extends State<MyAccount> {
             _pageItem(Icons.account_box_rounded, 'Profile', Colors.green,
                 const Profile()),
             _pageItem(Icons.question_answer_rounded,
-                'Frequently Asked Questions', Colors.red, const MyDonations())
+                'Frequently Asked Questions', Colors.red, const Faq())
           ]).toList()),
     );
   }

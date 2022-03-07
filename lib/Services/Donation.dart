@@ -40,4 +40,15 @@ class DonationService {
       print(e.message);
     }
   }
+
+  getDonations() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    try {
+      return await dio.post(URL + 'getdonations',
+          data: {'token': prefs.getString('emailAddress')});
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
 }

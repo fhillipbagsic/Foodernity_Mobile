@@ -4,10 +4,12 @@ class Item {
   Item({
     required this.expandedValue,
     required this.headerValue,
-    this.isExpanded = true,
+    required this.subtitleValue,
+    this.isExpanded = false,
   });
 
   String expandedValue;
   String headerValue;
+  String subtitleValue;
   bool isExpanded;
 }

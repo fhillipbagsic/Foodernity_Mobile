@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:foodernity_mobile/Pages/Home.dart';
 import 'package:foodernity_mobile/Pages/Signinup/ForgotPassword.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signup.dart';
@@ -24,7 +22,7 @@ class _SigninState extends State<Signin> {
   TextEditingController emailAddressController =
       TextEditingController(text: 'fcbagsic@gmail.com');
   TextEditingController passwordController =
-      TextEditingController(text: 'newpassword');
+      TextEditingController(text: 'may202000');
 
   @override
   Widget build(BuildContext context) {

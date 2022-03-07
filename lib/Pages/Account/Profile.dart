@@ -45,7 +45,7 @@ class _ProfileState extends State<Profile> {
     profilePicture = account.profilePicture;
     fullNameController.text = account.fullName;
     emailAddressController.text = account.emailAddress;
-
+    print(response.data['value']);
     return account;
   }
 
