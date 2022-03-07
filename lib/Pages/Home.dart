@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodernity_mobile/Pages/Account/Account.dart';
+import 'package:foodernity_mobile/Pages/Account/MyAccount.dart';
 import 'package:foodernity_mobile/Pages/Announcement/Announcement.dart';
 import 'package:foodernity_mobile/Pages/CallForDonation/CallForDonation.dart';
 import 'package:foodernity_mobile/Pages/MakeDonation/Guidelines.dart';
@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
     PlaceholderWidget(const Notifications()),
     PlaceholderWidget(const Announcement()),
     PlaceholderWidget(const CallForDonation()),
-    PlaceholderWidget(const Account())
+    PlaceholderWidget(const MyAccount())
   ];
 
   @override

@@ -21,8 +21,10 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   String signinError = '';
   final _formKey = GlobalKey<FormState>();
-  TextEditingController emailAddressController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailAddressController =
+      TextEditingController(text: 'fcbagsic@gmail.com');
+  TextEditingController passwordController =
+      TextEditingController(text: 'newpassword');
 
   @override
   Widget build(BuildContext context) {

@@ -167,7 +167,7 @@ class _SignupState extends State<Signup> {
   String getHelperText(String fieldName) {
     switch (fieldName) {
       case 'Full Name':
-        return 'First Name, Last Name';
+        return 'Your first and last name';
       case 'Password':
         return 'Must be at least 8 characters long';
     }

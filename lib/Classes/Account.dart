@@ -1,4 +1,4 @@
-import 'package:foodernity_mobile/Pages/Account/Account.dart';
+import 'package:foodernity_mobile/Pages/Account/MyAccount.dart';
 
 class Account {
   final String fullName;
