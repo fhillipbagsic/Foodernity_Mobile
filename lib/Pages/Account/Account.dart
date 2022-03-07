@@ -9,9 +9,18 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+  late Future<Account> futureAccount;
+
+  @override
+  void initState() {
+    super.initState();
+    // futureNotifications = getNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+      //future: futureAccount,
       builder: ((context, snapshot) {
         Widget announcementSliverList;
         if (snapshot.hasData) {

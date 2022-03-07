@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:foodernity_mobile/Pages/MakeDonation/CategoryItem.dart';
+import 'package:foodernity_mobile/Pages/MakeDonation/Donated.dart';
+import 'package:foodernity_mobile/Services/Donation.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,11 +23,10 @@ class _MakeDonationState extends State<MakeDonation> {
   String noDonationImage = '';
   TextEditingController donationNameController = TextEditingController();
   List<CategoryItem> categoryItems = [];
-  List<TextEditingController> controllers = [TextEditingController()];
+  List<TextEditingController> controllers = [];
   TextEditingController initialFoodCategoryController = TextEditingController();
   TextEditingController initialQuantityController = TextEditingController();
   TextEditingController initialExpiryDateController = TextEditingController();
-  List<String> selectedFoodCategories = [];
 
   void addFoodCategory() {
     TextEditingController foodCategoryController = TextEditingController();
@@ -41,10 +43,36 @@ class _MakeDonationState extends State<MakeDonation> {
     ));
   }
 
-  void addSelectedFoodCategory(String foodCategory) {
-    setState(() {
-      selectedFoodCategories.add('abc');
-    });
+  void postMakeDonation() async {
+    List<String> foodCategories = [initialFoodCategoryController.text];
+    List<String> quantities = [initialQuantityController.text];
+    List<String> expiryDates = [initialExpiryDateController.text];
+
+    for (int i = 0; i < controllers.length; i++) {
+      String text = controllers[i].text;
+      if (text.contains(('/'))) {
+        expiryDates.add(text);
+      } else if (RegExp(r'\d').hasMatch(text)) {
+        quantities.add(text);
+      } else {
+        foodCategories.add(text);
+      }
+    }
+    print(foodCategories);
+    Response response;
+    response = await DonationService().makeDonation(donationImage as File,
+        donationNameController.text, foodCategories, quantities, expiryDates);
+    if (response.data['status'] == 'ok') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: ((context) =>
+              Donated(donationName: donationNameController.text)),
+        ),
+      );
+    }
+
+    //print(response.data['value']);
   }
 
   @override
@@ -67,7 +95,7 @@ class _MakeDonationState extends State<MakeDonation> {
                   onTap: () {
                     if (donationImage != null) {
                       if (_formKey.currentState!.validate()) {
-                        print('all goods');
+                        postMakeDonation();
                       }
                     } else {
                       setState(() {
@@ -99,21 +127,14 @@ class _MakeDonationState extends State<MakeDonation> {
               ),
             ),
             //_dropoffLocation(),
+            categoryItems.isNotEmpty
+                ? _removeCategory()
+                : const SliverToBoxAdapter(),
             categoryItems.length == 3
                 ? const SliverToBoxAdapter(
                     child: SizedBox(),
                   )
                 : _addAnotherCategory(),
-            SliverToBoxAdapter(
-              child: ElevatedButton(
-                  onPressed: () {
-                    print('hello');
-                    for (int i = 0; i < selectedFoodCategories.length; i++) {
-                      print(selectedFoodCategories[i]);
-                    }
-                  },
-                  child: Text('get selected food categories')),
-            )
           ]),
         ),
       )),
@@ -208,6 +229,7 @@ class _MakeDonationState extends State<MakeDonation> {
             child: TextFormField(
               controller: controller,
               validator: donationNameValidator,
+              autocorrect: false,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 labelText: 'What are you donating?',
@@ -249,6 +271,39 @@ class _MakeDonationState extends State<MakeDonation> {
             style: TextStyle(fontSize: 12.sp, color: Colors.blue),
           )),
         ]),
+      ),
+    );
+  }
+
+  Widget _removeCategory() {
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        width: double.infinity,
+        child: CupertinoButton(
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.remove_rounded,
+                    size: 14.sp,
+                  ),
+                  SizedBox(
+                    width: 1.w,
+                  ),
+                  Text(
+                    'Remove previous category',
+                    style: TextStyle(fontSize: 12.sp),
+                  )
+                ]),
+            onPressed: () {
+              setState(() {
+                categoryItems.removeAt(categoryItems.length - 1);
+                controllers.removeAt(controllers.length - 1);
+                controllers.removeAt(controllers.length - 1);
+                controllers.removeAt(controllers.length - 1);
+              });
+            }),
       ),
     );
   }

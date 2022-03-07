@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoryItem extends StatefulWidget {
@@ -24,15 +25,21 @@ class CategoryItem extends StatefulWidget {
 
 class _CategoryItemState extends State<CategoryItem> {
   List<Text> foodCategories = [
-    Text(
-      'Canned Goods',
+    const Text(
+      'Canned Foods',
     ),
-    Text(
+    const Text('Canned Fruits'),
+    const Text('Canned Vegetables'),
+    const Text(
       'Instant Noodles',
     ),
-    Text('Eggs')
+    const Text('Eggs')
   ];
   String selectedValue = "";
+
+  void getFoodCategories() async {
+    final prefs = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +51,11 @@ class _CategoryItemState extends State<CategoryItem> {
               EdgeInsets.only(left: 5.w, right: 5.w, top: .5.h, bottom: .5.h),
           child: Column(
             children: [
-              widget.index >= 0
-                  ? Container(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              //widget.categoryItems.removeAt(widget.index);
-                            });
-                          },
-                          child: Icon(Icons.remove)),
-                    )
-                  : const SizedBox(),
               TextFormField(
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   _showCategoryDialog(CupertinoPicker(
-                      itemExtent: 40,
+                      itemExtent: 45,
                       onSelectedItemChanged: (value) {
                         Text text = foodCategories[value];
                         selectedValue = text.data.toString();

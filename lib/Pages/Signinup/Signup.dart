@@ -194,7 +194,7 @@ class _SignupState extends State<Signup> {
     void postSignup() async {
       Response response;
       response = await SignupService().signup(fullNameController.text,
-          emailAddressController.text, passwordController.text);
+          emailAddressController.text, passwordController.text, 'default');
 
       print(response.data);
       if (response.data['status'] == 'error') {

@@ -8,6 +8,7 @@ import 'package:foodernity_mobile/Pages/Signinup/ForgotPassword.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signup.dart';
 import 'package:foodernity_mobile/Services/Signinup.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class Signin extends StatefulWidget {
@@ -168,6 +169,7 @@ class _SigninState extends State<Signin> {
 
   Widget _signinButton() {
     void postSignin() async {
+      final prefs = await SharedPreferences.getInstance();
       Response response;
       response = await SignupService()
           .signin(emailAddressController.text, passwordController.text);
@@ -184,7 +186,9 @@ class _SigninState extends State<Signin> {
             ),
           ),
         );
-        print(response.data['value']);
+
+        await prefs.setString('emailAddress', response.data['value']);
+
         //RESET TOKEN ON LOGOUT
         Timer(
             const Duration(seconds: 1),

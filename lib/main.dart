@@ -16,6 +16,7 @@ const String URL = 'http://localhost:3001/';
 void main() {
   runApp(MaterialApp(
     home: MyApp(),
+    routes: {'/home': (context) => const Home()},
   ));
 }
 
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         home: Sizer(builder: ((context, orientation, deviceType) {
-          return emailAddress == '' ? const Signin() : const Home();
+          return const Signin();
         })));
   }
 

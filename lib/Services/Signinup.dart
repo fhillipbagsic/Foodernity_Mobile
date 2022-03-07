@@ -5,13 +5,17 @@ import 'package:foodernity_mobile/main.dart';
 class SignupService {
   Dio dio = Dio();
 
-  signup(String fullName, String emailAddress, String password) async {
+  signup(String fullName, String emailAddress, String password,
+      String method) async {
     try {
       return await dio.post(URL + 'signup',
           data: {
             'fullName': fullName,
             'emailAddress': emailAddress,
-            'password': password
+            'password': password,
+            'profilePicture':
+                'https://res.cloudinary.com/desimscj8/image/upload/v1646642678/blank-profile-picture-g380f44ef1_1280_z6ofn0.png',
+            'method': method,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
