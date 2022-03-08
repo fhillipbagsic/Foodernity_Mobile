@@ -5,7 +5,8 @@ import 'package:foodernity_mobile/Pages/MakeDonation/MakeaDonation.dart';
 import 'package:sizer/sizer.dart';
 
 class Guidelines extends StatefulWidget {
-  const Guidelines({Key? key}) : super(key: key);
+  final String donatedTo;
+  const Guidelines({Key? key, required this.donatedTo}) : super(key: key);
 
   @override
   State<Guidelines> createState() => _GuidelinesState();
@@ -106,7 +107,9 @@ class _GuidelinesState extends State<Guidelines> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MakeDonation()));
+                          builder: (context) => MakeDonation(
+                                donatedTo: widget.donatedTo,
+                              )));
                 },
                 child: Text('I AGREE', style: TextStyle(fontSize: 11.sp)),
               ),

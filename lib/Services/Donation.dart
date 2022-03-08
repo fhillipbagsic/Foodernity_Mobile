@@ -14,7 +14,8 @@ class DonationService {
       String donationName,
       List<String> foodCategories,
       List<String> quantities,
-      List<String> expiryDates) async {
+      List<String> expiryDates,
+      String donatedTo) async {
     final prefs = await SharedPreferences.getInstance();
 
     try {
@@ -31,6 +32,7 @@ class DonationService {
             'foodCategories': foodCategories,
             'quantities': quantities,
             'expiryDates': expiryDates,
+            'donatedTo': donatedTo,
             'token': prefs.getString('emailAddress')
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));

@@ -1,6 +1,5 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/src/dio.dart';
 import 'package:foodernity_mobile/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +41,19 @@ class AccountService {
             'fullName': fullName,
             'password': password,
             'token': prefs.getString(('emailAddress'))
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
+
+  getNotifications() async {
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      return await dio.post(URL + 'getnotifications',
+          data: {
+            'token': prefs.getString('emailAddress'),
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

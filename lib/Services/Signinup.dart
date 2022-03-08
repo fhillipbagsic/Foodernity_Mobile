@@ -26,7 +26,11 @@ class SignupService {
   signin(String emailAddress, String password) async {
     try {
       return await dio.post(URL + 'signin',
-          data: {'emailAddress': emailAddress, 'password': password},
+          data: {
+            'emailAddress': emailAddress,
+            'password': password,
+            'loginType': 'user'
+          },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
       print(e.message);

@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodernity_mobile/Classes/AppNotifications.dart';
 import 'package:foodernity_mobile/Pages/Notifications/NotificationItem.dart';
+import 'package:foodernity_mobile/Services/Account.dart';
 import 'package:sizer/sizer.dart';
 
 class Notifications extends StatefulWidget {
@@ -13,6 +15,7 @@ class Notifications extends StatefulWidget {
 
 class _NotificationsState extends State<Notifications> {
   late Future<List<AppNotifications>> futureNotifications;
+  List<AppNotifications> notifications = [];
 
   @override
   void initState() {
@@ -21,17 +24,16 @@ class _NotificationsState extends State<Notifications> {
   }
 
   Future<List<AppNotifications>> getNotifications() async {
+    Response response;
+
+    response = await AccountService().getNotifications();
+
     List<AppNotifications> notifications = [];
 
-    notifications.add(AppNotifications(
-        type: 'Received',
-        message:
-            'Your donation Pancit Canton has been received has been received. Thank you for donating!'));
+    for (var i = response.data['value'].length - 1; i >= 0; i--) {
+      notifications.add(AppNotifications.fromJSON(response.data['value'][i]));
+    }
 
-    notifications.add(AppNotifications(
-        type: 'Accepted',
-        message:
-            'Your donation Pancit Canton has been accepted. Please do prepare to send it right away. Thank you!'));
     return notifications;
   }
 

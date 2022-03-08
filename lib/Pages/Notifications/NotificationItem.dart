@@ -13,32 +13,46 @@ class NotificationItem extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
       child: Row(children: [
-        _icon(notification.type),
+        _icon(notification.status),
         SizedBox(
           width: 2.w,
         ),
-        _description(notification.type, notification.message)
+        _description(notification.status, notification.message)
       ]),
     );
   }
 
-  Widget _icon(String type) {
+  Widget _icon(String status) {
     Icon icon;
     Color? bgColor;
 
-    if (type == 'Received') {
+    if (status == 'Accepted') {
+      icon = const Icon(
+        Icons.check_rounded,
+        color: Colors.green,
+      );
+
+      bgColor = Colors.green[100];
+    } else if (status == 'Received') {
       icon = const Icon(
         Icons.inventory,
         color: Colors.blue,
       );
       bgColor = Colors.blue[100];
+    } else if (status == 'Donated') {
+      icon = const Icon(
+        Icons.volunteer_activism_rounded,
+        color: Colors.brown,
+      );
+      bgColor = Colors.brown[100];
     } else {
       icon = const Icon(
-        Icons.done_all_rounded,
-        color: Colors.green,
+        Icons.cancel_rounded,
+        color: Colors.red,
       );
-      bgColor = Colors.green[100];
+      bgColor = Colors.red[100];
     }
+
     return Container(
       padding: EdgeInsets.all(15.sp),
       decoration: BoxDecoration(
@@ -47,16 +61,27 @@ class NotificationItem extends StatelessWidget {
     );
   }
 
-  Widget _description(String type, String message) {
-    String title;
+  Widget _description(String status, String message) {
+    String title = "Donation " + status;
     Color color;
-    if (type == 'Received') {
-      title = 'Donation Received';
-      color = Colors.blue;
-    } else {
-      title = 'Donation Accepted';
+
+    if (status == 'Accepted') {
       color = Colors.green;
+    } else if (status == 'Received') {
+      color = Colors.blue;
+    } else if (status == 'Donated') {
+      color = Colors.brown;
+    } else {
+      color = Colors.red;
     }
+
+    // if (type == 'Received') {
+    //   title = 'Donation Received';
+    //   color = Colors.blue;
+    // } else {
+    //   title = 'Donation Accepted';
+    //   color = Colors.green;
+    // }
 
     return Expanded(
         child: Column(

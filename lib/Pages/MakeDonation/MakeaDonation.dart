@@ -11,7 +11,8 @@ import 'package:sizer/sizer.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MakeDonation extends StatefulWidget {
-  const MakeDonation({Key? key}) : super(key: key);
+  final String donatedTo;
+  const MakeDonation({Key? key, required this.donatedTo}) : super(key: key);
 
   @override
   State<MakeDonation> createState() => _MakeDonationState();
@@ -58,10 +59,16 @@ class _MakeDonationState extends State<MakeDonation> {
         foodCategories.add(text);
       }
     }
-    print(foodCategories);
+
     Response response;
-    response = await DonationService().makeDonation(donationImage as File,
-        donationNameController.text, foodCategories, quantities, expiryDates);
+    response = await DonationService().makeDonation(
+        donationImage as File,
+        donationNameController.text,
+        foodCategories,
+        quantities,
+        expiryDates,
+        widget.donatedTo);
+
     if (response.data['status'] == 'ok') {
       Navigator.push(
         context,
@@ -95,6 +102,15 @@ class _MakeDonationState extends State<MakeDonation> {
                   onTap: () {
                     if (donationImage != null) {
                       if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            duration: Duration(seconds: 2),
+                            content: Text(
+                              'Please wait',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
                         postMakeDonation();
                       }
                     } else {

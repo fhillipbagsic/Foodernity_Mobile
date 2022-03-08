@@ -48,9 +48,11 @@ class _HomeState extends State<Home> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const Guidelines()));
+                        builder: (context) => const Guidelines(
+                              donatedTo: 'Common Donation',
+                            )));
               },
-              child: const Icon(Icons.add),
+              child: const Icon(Icons.volunteer_activism_rounded),
             )
           : null,
     );

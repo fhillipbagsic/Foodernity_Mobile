@@ -8,7 +8,7 @@ import 'package:sizer/sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 const String URL = 'http://localhost:3001/';
-//final String herokuURL = 'http://foodernity-server.herokuapp.com/';
+// const String URL = 'http://foodernity-server.herokuapp.com/';
 void main() {
   runApp(MaterialApp(
     home: MyApp(),
@@ -30,8 +30,6 @@ class _MyAppState extends State<MyApp> {
   String emailAddress = '';
 
   Future<void> initConnectivity() async {
-    //final prefs = await SharedPreferences.getInstance();
-    //emailAddress = prefs.getString('emailAddress')!;
     late ConnectivityResult result;
 
     try {

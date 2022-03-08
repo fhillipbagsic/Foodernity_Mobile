@@ -1,10 +1,10 @@
 class AppNotifications {
-  String type;
+  String status;
   String message;
 
-  AppNotifications({required this.type, required this.message});
+  AppNotifications({required this.status, required this.message});
 
   factory AppNotifications.fromJSON(Map<String, dynamic> data) {
-    return AppNotifications(type: data['type'], message: data['message']);
+    return AppNotifications(status: data['status'], message: data['message']);
   }
 }

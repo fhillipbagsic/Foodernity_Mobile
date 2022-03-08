@@ -85,7 +85,7 @@ class _DonationItemState extends State<DonationItem> {
     String label = '';
     if (status == 'Pending') {
       icon = Icons.hourglass_full_rounded;
-      color = Colors.blue;
+      color = Colors.orange;
       label = 'Pending Donation';
     } else if (status == 'Accepted') {
       icon = Icons.check_circle_rounded;
@@ -93,12 +93,17 @@ class _DonationItemState extends State<DonationItem> {
       label = 'Donation Accepted';
     } else if (status == 'Received') {
       icon = Icons.inventory;
-      color = Colors.orange;
+      color = Colors.blue;
+
       label = 'Donation Received';
-    } else {
+    } else if (status == 'Donated') {
       icon = Icons.volunteer_activism_rounded;
-      color = Colors.red;
+      color = Colors.brown;
       label = 'Donated';
+    } else {
+      icon = Icons.cancel_rounded;
+      color = Colors.red;
+      label = 'Donation Declined';
     }
 
     return Row(
@@ -129,8 +134,10 @@ class _DonationItemState extends State<DonationItem> {
       description = 'Donation Accepted';
     } else if (status == 'Received') {
       description = 'Donation Received';
-    } else {
+    } else if (status == 'Donated') {
       description = 'Donation Received';
+    } else {
+      description = 'Donation declined';
     }
     return SizedBox(
       child: Text(
