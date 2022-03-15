@@ -15,6 +15,7 @@ class SignupService {
             'password': password,
             'profilePicture':
                 'https://res.cloudinary.com/desimscj8/image/upload/v1646642678/blank-profile-picture-g380f44ef1_1280_z6ofn0.png',
+            'status': 'Active',
             'method': method,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));

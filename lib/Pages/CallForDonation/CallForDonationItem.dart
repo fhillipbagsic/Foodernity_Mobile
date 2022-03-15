@@ -28,12 +28,35 @@ class _CallForDonationItemState extends State<CallForDonationItem> {
               borderRadius: BorderRadius.circular(5.0),
               child: Image.network(
                 widget.item.image,
-                height: 20.h,
+                height: 40.h,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
-            Text(widget.item.title)
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.item.title,
+                    style:
+                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    widget.item.remarks,
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.grey[600],
+                        overflow: TextOverflow.ellipsis),
+                    maxLines: 2,
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

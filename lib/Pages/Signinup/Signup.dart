@@ -54,35 +54,37 @@ class _SignupState extends State<Signup> {
                   ),
                   child: Form(
                     key: _formKey,
-                    child: Column(
-                      children: [
-                        _field('Full Name', fullNameController),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        _field('Email Address', emailAddressController),
-                        _field('Password', passwordController),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        _confirmPasswordField(),
-                        _agreement(),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        Text(
-                          signupError,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        _signupButton(),
-                        SizedBox(
-                          height: 3.h,
-                        ),
-                        _hasAccount()
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _field('Full Name', fullNameController),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          _field('Email Address', emailAddressController),
+                          _field('Password', passwordController),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          _confirmPasswordField(),
+                          _agreement(),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Text(
+                            signupError,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          _signupButton(),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          _hasAccount()
+                        ],
+                      ),
                     ),
                   ),
                 ),
