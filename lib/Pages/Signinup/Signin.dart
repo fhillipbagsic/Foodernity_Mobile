@@ -8,6 +8,7 @@ import 'package:foodernity_mobile/Services/Signinup.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Signin extends StatefulWidget {
   const Signin({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _SigninState extends State<Signin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -90,7 +92,7 @@ class _SigninState extends State<Signin> {
                       SizedBox(
                         height: 1.5.h,
                       ),
-                      _googleSigninButton(),
+                      GoogleButton(),
                       SizedBox(
                         height: 4.h,
                       ),
@@ -253,6 +255,200 @@ class _SigninState extends State<Signin> {
           ),
         ),
       ],
+    );
+  }
+}
+
+String email = '';
+String fullname = '';
+
+// Future<bool> googleSignin(context) async {
+//   final prefs = await SharedPreferences.getInstance();
+//   var formatter = DateFormat('MM/dd/yyyy');
+//   String now = formatter.format(new DateTime.now());
+//   http.Response response =
+//       await http.post("https://foodernity.herokuapp.com/login/googleLogin",
+//           headers: <String, String>{
+//             'Content-Type': 'application/json; charset=UTF-8',
+//           },
+//           body: jsonEncode(<String, String>{
+//             'email': email,
+//             'password': "",
+//             'fullName': fullname,
+//             'dateOfReg': now,
+//             'loginMethod': 'google',
+//             'userType': 'user',
+//             'userStatus': 'active',
+//           }));
+//   print(response.body);
+//   var message = response.body;
+//   if (message == "Email is in use in different login method.") {
+//     _showErrorMessage(context, "Email is in use in different login method.");
+//     return false;
+//   } else if (message == "Logged in") {
+//     await prefs.setString('email', email);
+//     var string = await prefs.getString('email');
+//     print(string);
+//     Navigator.pushReplacement(
+//         context, MaterialPageRoute(builder: (context) => Home()));
+//     return true;
+//   } else if (message == "new user added successfully via google login") {
+//     _showSuccess(context, "Successfully Registered via google login");
+//     await prefs.setString('email', email);
+//     var string = await prefs.getString('email');
+//     print(string);
+//     Navigator.pushReplacement(
+//         context, MaterialPageRoute(builder: (context) => Home()));
+//     return true;
+//   } else {
+//     _showErrorMessage(context, message);
+//     return false;
+//   }
+// }
+
+//alert dialog when success
+void _showSuccess(context, String subtitle) {
+  var message = subtitle;
+  Widget continueButton = FlatButton(
+    child: const Text(
+      "Close",
+      style: TextStyle(color: Colors.black),
+    ),
+    onPressed: () {
+      Navigator.of(context, rootNavigator: true).pop();
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Row(
+      // ignore: prefer_const_literals_to_create_immutables
+      children: [
+        const Text("Success!", style: TextStyle(color: Colors.greenAccent)),
+      ],
+    ),
+    content: Text(
+      message,
+      style: const TextStyle(color: Colors.black),
+    ),
+    actions: [
+      continueButton,
+    ],
+    backgroundColor: Colors.white,
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+//alert dialog when user doesnt exists
+void _showErrorMessage(context, String subtitle) {
+  var subtitle1 = subtitle;
+  Widget continueButton = FlatButton(
+    child: const Text(
+      "Close",
+      style: TextStyle(color: Colors.red),
+    ),
+    onPressed: () {
+      Navigator.of(context, rootNavigator: true).pop();
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Row(
+      // ignore: prefer_const_literals_to_create_immutables
+      children: [
+        const Text("Login Error", style: TextStyle(color: Colors.redAccent)),
+      ],
+    ),
+    content: Text(
+      subtitle1,
+      style: const TextStyle(color: Colors.black),
+    ),
+    actions: [
+      continueButton,
+    ],
+    backgroundColor: Colors.white,
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+class GoogleButton extends StatefulWidget {
+  const GoogleButton({Key? key}) : super(key: key);
+
+  @override
+  _GoogleButtonState createState() => _GoogleButtonState();
+}
+
+class _GoogleButtonState extends State<GoogleButton> {
+  @override
+  bool _isLoggedIn = false;
+  late GoogleSignInAccount _userObj;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          (OutlinedButton(
+              onPressed: () {
+                _googleSignIn.signOut().then((value) {
+                  setState(() {
+                    _isLoggedIn = false;
+                  });
+                }).catchError((e) {});
+                _googleSignIn.signIn().then((userData) {
+                  setState(() async {
+                    _isLoggedIn = true;
+                    _userObj = userData!;
+                    email = _userObj.email;
+                    fullname = _userObj.displayName!;
+                    print(_userObj);
+                    print(_userObj.displayName);
+                    print(_userObj.email);
+                    // var val = await googleSignin(context);
+                    // if (val == true) {
+                    // } else {
+                    //   _googleSignIn.signOut().then((value) {
+                    //     setState(() {
+                    //       _isLoggedIn = false;
+                    //     });
+                    //   }).catchError((e) {});
+                    // }
+                  });
+                }).catchError((e) {
+                  print(e);
+                });
+              },
+              style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.grey)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  const Text(
+                    'SIGN IN WITH GOOGLE',
+                    style: TextStyle(color: Colors.grey),
+                  )
+                ],
+              ))),
+        ],
+      ),
     );
   }
 }

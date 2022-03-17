@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "855059899352",
+    "project_id": "sign-in-ad235",
+    "storage_bucket": "sign-in-ad235.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855059899352:android:a36672b12082a0224488ad",
+        "android_client_info": {
+          "package_name": "com.example.foodernity_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855059899352-ub8t2ic2bc1o21feujbd9820o5bqomvu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodernity_mobile",
+            "certificate_hash": "1e3cb45a945279c9d8a09c56aa06a72923d3eda0"
+          }
+        },
+        {
+          "client_id": "855059899352-gtid2p4v6tkac4t2tkad7vs777onagk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk-SWjkHEWhTXbczK52rpa88rLb1L5JL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "855059899352-gtid2p4v6tkac4t2tkad7vs777onagk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
