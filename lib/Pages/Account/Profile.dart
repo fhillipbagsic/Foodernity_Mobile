@@ -26,6 +26,7 @@ class _ProfileState extends State<Profile> {
   late Future<Account> futureProfile;
   late String profilePicture;
   late File newProfilePicture;
+  late bool newHidden;
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailAddressController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -45,7 +46,7 @@ class _ProfileState extends State<Profile> {
     profilePicture = account.profilePicture;
     fullNameController.text = account.fullName;
     emailAddressController.text = account.emailAddress;
-    print(response.data['value']);
+    newHidden = account.hidden;
     return account;
   }
 
@@ -53,8 +54,8 @@ class _ProfileState extends State<Profile> {
     Response response;
     String profilePicturePath =
         changeImage ? newProfilePicture.path : profilePicture;
-    response = await AccountService().saveAccount(
-        profilePicturePath, fullNameController.text, passwordController.text);
+    response = await AccountService().saveAccount(profilePicturePath,
+        fullNameController.text, passwordController.text, newHidden);
 
     if (response.data['status'] == 'ok') {
       Navigator.pop(context);
@@ -86,13 +87,16 @@ class _ProfileState extends State<Profile> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        Text('be anon'),
                         _profilePicture(profilePicture),
                         readOnly
                             ? SizedBox(
-                                height: 3.h,
+                                height: 1.5.h,
                               )
                             : _uploadProfilePicture(),
+                        _hidden(newHidden),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         _field('Full Name', fullNameController),
                         SizedBox(
                           height: 2.h,
@@ -179,12 +183,14 @@ class _ProfileState extends State<Profile> {
 
   Widget _uploadProfilePicture() {
     Future<void> uploadImage() async {
+      print('heelo');
       if (await Permission.photos.request().isGranted) {
         final picker = ImagePicker();
 
         final XFile? pickedImage =
             await picker.pickImage(source: ImageSource.gallery);
 
+        print(pickedImage);
         if (pickedImage != null && pickedImage.path != '') {
           setState(() {
             changeImage = true;
@@ -206,7 +212,57 @@ class _ProfileState extends State<Profile> {
         ),
         onPressed: () {
           uploadImage();
+          print('heels');
         });
+  }
+
+  Widget _hidden(bool hidden) {
+    String description = '';
+    IconData icon;
+
+    if (hidden) {
+      description = 'Profile is hidden';
+      icon = Icons.visibility_off_rounded;
+    } else {
+      description = 'Profile is visible';
+      icon = Icons.visibility_rounded;
+    }
+    return readOnly
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 15.sp,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                description,
+                style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+              )
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Checkbox(
+                  value: hidden,
+                  onChanged: readOnly
+                      ? null
+                      : (bool? value) {
+                          newHidden = !newHidden;
+                          setState(() {
+                            madeChanges = true;
+                          });
+                        }),
+              Text(
+                'Set Profile Visibility',
+                style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),
+              )
+            ],
+          );
   }
 
   Widget _field(String fieldName, TextEditingController controller) {

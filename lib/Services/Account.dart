@@ -17,7 +17,8 @@ class AccountService {
     }
   }
 
-  saveAccount(String profilePicture, String fullName, String password) async {
+  saveAccount(String profilePicture, String fullName, String password,
+      bool hidden) async {
     final prefs = await SharedPreferences.getInstance();
 
     Future<String> getProfilePicture(String profilePicture) async {
@@ -40,6 +41,7 @@ class AccountService {
             'profilePicture': await getProfilePicture(profilePicture),
             'fullName': fullName,
             'password': password,
+            'hidden': hidden,
             'token': prefs.getString(('emailAddress'))
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));

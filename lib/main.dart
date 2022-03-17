@@ -7,8 +7,8 @@ import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
 import 'package:sizer/sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-const String URL = 'http://localhost:3001/';
-// const String URL = 'http://foodernity-server.herokuapp.com/';
+// const String URL = 'http://localhost:3001/';
+const String URL = 'http://foodernity-server.herokuapp.com/';
 void main() {
   runApp(MaterialApp(
     home: MyApp(),

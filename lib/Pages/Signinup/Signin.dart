@@ -408,7 +408,9 @@ class _GoogleButtonState extends State<GoogleButton> {
                   setState(() {
                     _isLoggedIn = false;
                   });
-                }).catchError((e) {});
+                }).catchError((e) {
+                  print(e);
+                });
                 _googleSignIn.signIn().then((userData) {
                   setState(() async {
                     _isLoggedIn = true;
