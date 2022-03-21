@@ -33,7 +33,14 @@ class _CategoryItemState extends State<CategoryItem> {
     const Text(
       'Instant Noodles',
     ),
-    const Text('Eggs')
+    const Text('Eggs'),
+    const Text('Rice'),
+    const Text('Cereals'),
+    const Text('Tea/Coffee/Milk/Sugar'),
+    const Text('Biscuits'),
+    const Text('Condiments and Sauces'),
+    const Text('Beverages'),
+    const Text('Snacks')
   ];
   String selectedValue = "";
 
@@ -55,7 +62,7 @@ class _CategoryItemState extends State<CategoryItem> {
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   _showCategoryDialog(CupertinoPicker(
-                      itemExtent: 45,
+                      itemExtent: 30,
                       onSelectedItemChanged: (value) {
                         Text text = foodCategories[value];
                         selectedValue = text.data.toString();
@@ -103,12 +110,12 @@ class _CategoryItemState extends State<CategoryItem> {
                     child: TextFormField(
                       onTap: () {
                         FocusScope.of(context).requestFocus(FocusNode());
-                        DateTime date = DateTime(2016, 10, 26);
+
                         _showDateDialog(
                           CupertinoDatePicker(
-                            initialDateTime: date,
                             mode: CupertinoDatePickerMode.date,
                             use24hFormat: true,
+                            minimumDate: DateTime.now(),
                             onDateTimeChanged: (DateTime newDate) {
                               setState(
                                 () => widget.expiryDateController.text =

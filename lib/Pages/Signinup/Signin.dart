@@ -21,9 +21,8 @@ class _SigninState extends State<Signin> {
   String signinError = '';
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailAddressController =
-      TextEditingController(text: 'fcbagsic@gmail.com');
-  TextEditingController passwordController =
-      TextEditingController(text: 'may202000');
+      TextEditingController(text: '');
+  TextEditingController passwordController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -220,19 +219,6 @@ class _SigninState extends State<Signin> {
     );
   }
 
-  Widget _googleSigninButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {},
-        child: Text(
-          'SIGN IN WITH GOOGLE',
-          style: TextStyle(fontSize: 11.sp),
-        ),
-      ),
-    );
-  }
-
   Widget _noAccount() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -257,131 +243,6 @@ class _SigninState extends State<Signin> {
       ],
     );
   }
-}
-
-String email = '';
-String fullname = '';
-
-// Future<bool> googleSignin(context) async {
-//   final prefs = await SharedPreferences.getInstance();
-//   var formatter = DateFormat('MM/dd/yyyy');
-//   String now = formatter.format(new DateTime.now());
-//   http.Response response =
-//       await http.post("https://foodernity.herokuapp.com/login/googleLogin",
-//           headers: <String, String>{
-//             'Content-Type': 'application/json; charset=UTF-8',
-//           },
-//           body: jsonEncode(<String, String>{
-//             'email': email,
-//             'password': "",
-//             'fullName': fullname,
-//             'dateOfReg': now,
-//             'loginMethod': 'google',
-//             'userType': 'user',
-//             'userStatus': 'active',
-//           }));
-//   print(response.body);
-//   var message = response.body;
-//   if (message == "Email is in use in different login method.") {
-//     _showErrorMessage(context, "Email is in use in different login method.");
-//     return false;
-//   } else if (message == "Logged in") {
-//     await prefs.setString('email', email);
-//     var string = await prefs.getString('email');
-//     print(string);
-//     Navigator.pushReplacement(
-//         context, MaterialPageRoute(builder: (context) => Home()));
-//     return true;
-//   } else if (message == "new user added successfully via google login") {
-//     _showSuccess(context, "Successfully Registered via google login");
-//     await prefs.setString('email', email);
-//     var string = await prefs.getString('email');
-//     print(string);
-//     Navigator.pushReplacement(
-//         context, MaterialPageRoute(builder: (context) => Home()));
-//     return true;
-//   } else {
-//     _showErrorMessage(context, message);
-//     return false;
-//   }
-// }
-
-//alert dialog when success
-void _showSuccess(context, String subtitle) {
-  var message = subtitle;
-  Widget continueButton = FlatButton(
-    child: const Text(
-      "Close",
-      style: TextStyle(color: Colors.black),
-    ),
-    onPressed: () {
-      Navigator.of(context, rootNavigator: true).pop();
-    },
-  );
-
-  AlertDialog alert = AlertDialog(
-    title: Row(
-      // ignore: prefer_const_literals_to_create_immutables
-      children: [
-        const Text("Success!", style: TextStyle(color: Colors.greenAccent)),
-      ],
-    ),
-    content: Text(
-      message,
-      style: const TextStyle(color: Colors.black),
-    ),
-    actions: [
-      continueButton,
-    ],
-    backgroundColor: Colors.white,
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
-
-//alert dialog when user doesnt exists
-void _showErrorMessage(context, String subtitle) {
-  var subtitle1 = subtitle;
-  Widget continueButton = FlatButton(
-    child: const Text(
-      "Close",
-      style: TextStyle(color: Colors.red),
-    ),
-    onPressed: () {
-      Navigator.of(context, rootNavigator: true).pop();
-    },
-  );
-
-  AlertDialog alert = AlertDialog(
-    title: Row(
-      // ignore: prefer_const_literals_to_create_immutables
-      children: [
-        const Text("Login Error", style: TextStyle(color: Colors.redAccent)),
-      ],
-    ),
-    content: Text(
-      subtitle1,
-      style: const TextStyle(color: Colors.black),
-    ),
-    actions: [
-      continueButton,
-    ],
-    backgroundColor: Colors.white,
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
 }
 
 class GoogleButton extends StatefulWidget {
@@ -415,19 +276,25 @@ class _GoogleButtonState extends State<GoogleButton> {
                   setState(() async {
                     _isLoggedIn = true;
                     _userObj = userData!;
-                    email = _userObj.email;
-                    fullname = _userObj.displayName!;
-                    print(_userObj);
-                    print(_userObj.displayName);
-                    print(_userObj.email);
-                    // var val = await googleSignin(context);
-                    // if (val == true) {
-                    // } else {
-                    //   _googleSignIn.signOut().then((value) {
-                    //     setState(() {
-                    //       _isLoggedIn = false;
-                    //     });
-                    //   }).catchError((e) {});
+                    final prefs = await SharedPreferences.getInstance();
+                    Response response = await SignupService().googlesignin(
+                        _userObj.displayName,
+                        _userObj.email,
+                        _userObj.photoUrl,
+                        'Google Sign-in',
+                        'Google');
+
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(milliseconds: 500),
+                      content: Text(
+                        'Signing in',
+                        textAlign: TextAlign.center,
+                      ),
+                    ));
+
+                    // if (response.data['status'] == 'ok') {
+                    //   await prefs.setString(
+                    //       'emailAddress', response.data['value']);
                     // }
                   });
                 }).catchError((e) {

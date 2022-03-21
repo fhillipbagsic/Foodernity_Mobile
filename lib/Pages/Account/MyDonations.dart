@@ -50,15 +50,9 @@ class _MyDonationsState extends State<MyDonations> {
                   padding:
                       EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.5.w),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text('abc'),
-                      Column(
-                        children: donationItems
-                            .map((item) => DonationItem(donation: item))
-                            .toList(),
-                      ),
-                    ],
+                    children: donationItems
+                        .map((item) => DonationItem(donation: item))
+                        .toList(),
                   ),
                 ),
               );

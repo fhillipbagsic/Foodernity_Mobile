@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodernity_mobile/Pages/Home.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
+import 'package:foodernity_mobile/Pages/SplashScreen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -24,6 +25,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool showSplashScreen = true;
+
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -61,21 +64,37 @@ class _MyAppState extends State<MyApp> {
 
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    Timer(
+        const Duration(seconds: 1),
+        () => setState(() {
+              showSplashScreen = false;
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Foodernity',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: Sizer(builder: ((context, orientation, deviceType) {
-          return const Signin();
-        })));
+      title: 'Foodernity',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: showSplashScreen
+          ? const SplashScreen()
+          : Sizer(
+              builder: ((context, orientation, deviceType) {
+                return const Signin();
+              }),
+            ),
+    );
   }
 
+/**
+ Sizer(
+        builder: ((context, orientation, deviceType) {
+          return const Signin();
+        }),
+      ),
+ */
   void _showDialog(context) {
     showDialog(
         context: context,

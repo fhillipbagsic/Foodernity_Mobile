@@ -38,6 +38,24 @@ class SignupService {
     }
   }
 
+  googlesignin(String? fullName, String? emailAddress, String? profilePicture,
+      String password, String method) async {
+    try {
+      return await dio.post('googlesignin',
+          data: {
+            'fullName': fullName,
+            'emailAddress': emailAddress,
+            'password': password,
+            'profilePicture': profilePicture,
+            'status': 'Active',
+            'method': method,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
+
   forgotpassword(String emailAddress) async {
     try {
       return await dio.post(URL + 'forgotpassword',

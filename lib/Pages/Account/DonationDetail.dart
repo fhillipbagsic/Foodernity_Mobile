@@ -28,7 +28,18 @@ class DonationDetail extends StatelessWidget {
                   SizedBox(
                     height: 1.h,
                   ),
-                  _status(donation.status)
+                  _status(donation.status),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Donated items',
+                    style:
+                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+                  ),
+                  Column(
+                    children: donation.donations.map((e) => _item(e)).toList(),
+                  )
                 ],
               ),
             )
@@ -64,23 +75,23 @@ class DonationDetail extends StatelessWidget {
     Color? bgColor;
 
     if (status == 'Pending') {
-      description = '';
-      fontColor = Colors.black;
-      borderColor = Colors.black;
-      bgColor = Colors.black;
-    } else if (status == 'Accepted') {
       description =
-          'You will be notified once your donation has been accepted so you can proceed to deliver it';
+          'You will be notified once the organization has accepted your donation.';
+      fontColor = Colors.orange[500];
+      borderColor = Colors.orange;
+      bgColor = Colors.orange[50];
+    } else if (status == 'Accepted') {
+      description = 'You can proceed to deliver your donation at (address)';
       fontColor = Colors.green[500];
       borderColor = Colors.green;
       bgColor = Colors.green[50];
     } else if (status == 'Received') {
-      description = 'received';
+      description = 'Your donation has been received by the organization.';
       fontColor = Colors.blue[500];
       borderColor = Colors.blue;
       bgColor = Colors.blue[50];
     } else {
-      description = 'declined';
+      description = 'Your donation has been declined.';
       fontColor = Colors.red[500];
       borderColor = Colors.red;
       bgColor = Colors.red[50];
@@ -106,6 +117,18 @@ class DonationDetail extends StatelessWidget {
         ),
       ),
     );
-    ;
+  }
+
+  Widget _item(donations) {
+    return Card(
+      child: ListTile(
+        title: Text(
+          donations['foodCategory'],
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text('Expiry date: ' + donations['expiryDate']),
+        trailing: Text(donations['quantity'] + 'pc/s'),
+      ),
+    );
   }
 }
