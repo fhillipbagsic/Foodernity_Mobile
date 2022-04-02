@@ -45,5 +45,16 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>I need photo access</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.855059899352-fjiildihl9lm7t8rgo58pc4dngkihf3f</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

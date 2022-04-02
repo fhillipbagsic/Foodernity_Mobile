@@ -53,8 +53,11 @@ class _NotificationsState extends State<Notifications> {
         } else {
           notificationsSliverList = SliverToBoxAdapter(
             child: Container(
-                margin: EdgeInsets.only(top: 2.h),
-                child: const Center(child: CircularProgressIndicator())),
+              margin: EdgeInsets.only(top: 2.h),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
         return Container(

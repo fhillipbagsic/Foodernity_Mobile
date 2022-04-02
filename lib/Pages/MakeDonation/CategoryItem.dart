@@ -26,13 +26,13 @@ class CategoryItem extends StatefulWidget {
 class _CategoryItemState extends State<CategoryItem> {
   List<Text> foodCategories = [
     const Text(
+      'Instant Noodles',
+    ),
+    const Text(
       'Canned Foods',
     ),
     const Text('Canned Fruits'),
     const Text('Canned Vegetables'),
-    const Text(
-      'Instant Noodles',
-    ),
     const Text('Eggs'),
     const Text('Rice'),
     const Text('Cereals'),

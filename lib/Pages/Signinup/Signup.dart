@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/gestures.dart';
+import 'package:foodernity_mobile/Pages/Signinup/PrivacyPolicy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:foodernity_mobile/Services/Signinup.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -57,6 +60,9 @@ class _SignupState extends State<Signup> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          const SizedBox(
+                            height: 5,
+                          ),
                           _field('Full Name', fullNameController),
                           SizedBox(
                             height: 2.h,
@@ -179,12 +185,21 @@ class _SignupState extends State<Signup> {
   Widget _agreement() {
     return (RichText(
       textAlign: TextAlign.center,
-      text: const TextSpan(
+      text: TextSpan(
           text:
               'By signing up for an account, you agree that you have read and accepted our ',
-          style: TextStyle(color: Colors.grey),
+          style: const TextStyle(color: Colors.grey),
           children: [
             TextSpan(
+              recognizer: new TapGestureRecognizer()
+                ..onTap = (() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PrivacyPolicy(),
+                    ),
+                  );
+                }),
               text: 'Data Privacy Policy.',
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),

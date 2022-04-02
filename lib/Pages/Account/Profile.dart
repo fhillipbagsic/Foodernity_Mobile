@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodernity_mobile/Assets/my_flutter_app_icons.dart';
 import 'package:foodernity_mobile/Classes/Account.dart';
 import 'package:foodernity_mobile/Services/Account.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -31,6 +32,7 @@ class _ProfileState extends State<Profile> {
   TextEditingController emailAddressController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  late String method;
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _ProfileState extends State<Profile> {
     fullNameController.text = account.fullName;
     emailAddressController.text = account.emailAddress;
     newHidden = account.hidden;
+    method = account.method;
     return account;
   }
 
@@ -105,11 +108,16 @@ class _ProfileState extends State<Profile> {
                         SizedBox(
                           height: 3.h,
                         ),
-                        _field('Password', passwordController),
+                        method == 'Google' ? _method() : const SizedBox(),
+                        method == 'Google'
+                            ? const SizedBox()
+                            : _field('Password', passwordController),
                         SizedBox(
                           height: 3.h,
                         ),
-                        _confirmPasswordField(confirmPasswordController)
+                        method == 'Google'
+                            ? const SizedBox()
+                            : _confirmPasswordField(confirmPasswordController)
                       ],
                     ),
                   ),
@@ -312,6 +320,20 @@ class _ProfileState extends State<Profile> {
         ),
       ),
       obscureText: true,
+    );
+  }
+
+  Widget _method() {
+    return Container(
+      child: const ListTile(
+          leading: Icon(
+            MyFlutterApp.google,
+            color: Colors.blue,
+          ),
+          title: Text(
+            'Signed-in using Google Account',
+            style: TextStyle(color: Colors.blue),
+          )),
     );
   }
 

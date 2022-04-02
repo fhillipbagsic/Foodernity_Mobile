@@ -41,7 +41,7 @@ class SignupService {
   googlesignin(String? fullName, String? emailAddress, String? profilePicture,
       String password, String method) async {
     try {
-      return await dio.post('googlesignin',
+      return await dio.post(URL + 'googlesignin',
           data: {
             'fullName': fullName,
             'emailAddress': emailAddress,

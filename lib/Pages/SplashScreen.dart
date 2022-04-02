@@ -8,7 +8,13 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        child: Center(child: Text('splash screen')),
+        color: Colors.blue,
+        child: const Center(
+            child: Text(
+          'Foodernity',
+          style: TextStyle(
+              color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+        )),
       )),
     );
   }

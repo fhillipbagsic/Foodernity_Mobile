@@ -81,7 +81,8 @@ class DonationDetail extends StatelessWidget {
       borderColor = Colors.orange;
       bgColor = Colors.orange[50];
     } else if (status == 'Accepted') {
-      description = 'You can proceed to deliver your donation at (address)';
+      description =
+          'You can proceed to deliver your donation at Calabash Rd., Balic-Balic, Manila, Philippines';
       fontColor = Colors.green[500];
       borderColor = Colors.green;
       bgColor = Colors.green[50];

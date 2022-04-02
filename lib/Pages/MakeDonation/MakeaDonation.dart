@@ -161,10 +161,11 @@ class _MakeDonationState extends State<MakeDonation> {
     Future<void> uploadImage() async {
       if (await Permission.photos.request().isGranted) {
         final picker = ImagePicker();
-
+        print('hello');
         final XFile? pickedImage =
             await picker.pickImage(source: ImageSource.gallery);
 
+        print(pickedImage);
         if (pickedImage != null && pickedImage.path != '') {
           setState(() {
             donationImage = File(pickedImage.path);
@@ -175,6 +176,8 @@ class _MakeDonationState extends State<MakeDonation> {
           await Permission.photos.isPermanentlyDenied) {
         openAppSettings();
         setState(() {});
+      } else {
+        return;
       }
     }
 

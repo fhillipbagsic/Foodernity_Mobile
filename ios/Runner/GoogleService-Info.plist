@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>855059899352-fjiildihl9lm7t8rgo58pc4dngkihf3f.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.855059899352-fjiildihl9lm7t8rgo58pc4dngkihf3f</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>855059899352-ub8t2ic2bc1o21feujbd9820o5bqomvu.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD1nhCdi8UyeJbzWBfg0xhkeA9mcT1qBK8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>855059899352</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.foodernityMobile</string>
+	<key>PROJECT_ID</key>
+	<string>sign-in-ad235</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sign-in-ad235.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:855059899352:ios:35eae83d1dc9f9c84488ad</string>
+</dict>
+</plist>

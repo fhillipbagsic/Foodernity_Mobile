@@ -8,10 +8,11 @@ import 'package:foodernity_mobile/Pages/SplashScreen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-// const String URL = 'http://localhost:3001/';
-const String URL = 'http://foodernity-server.herokuapp.com/';
+const String URL = 'http://localhost:3001/';
+// const String URL = 'http://foodernity-server.herokuapp.com/';
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: MyApp(),
     routes: {'/home': (context) => const Home()},
   ));
@@ -75,6 +76,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Foodernity',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -88,13 +90,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-/**
- Sizer(
-        builder: ((context, orientation, deviceType) {
-          return const Signin();
-        }),
-      ),
- */
   void _showDialog(context) {
     showDialog(
         context: context,

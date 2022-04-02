@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:foodernity_mobile/Assets/my_flutter_app_icons.dart';
 import 'package:foodernity_mobile/Pages/Home.dart';
 import 'package:foodernity_mobile/Pages/Signinup/ForgotPassword.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signup.dart';
+import 'package:foodernity_mobile/Services/Announcement.dart';
 import 'package:foodernity_mobile/Services/Signinup.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,7 +94,7 @@ class _SigninState extends State<Signin> {
                       SizedBox(
                         height: 1.5.h,
                       ),
-                      GoogleButton(),
+                      _googleSignIn(),
                       SizedBox(
                         height: 4.h,
                       ),
@@ -243,81 +246,229 @@ class _SigninState extends State<Signin> {
       ],
     );
   }
-}
 
-class GoogleButton extends StatefulWidget {
-  const GoogleButton({Key? key}) : super(key: key);
+  Widget _googleSignIn() {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  @override
-  _GoogleButtonState createState() => _GoogleButtonState();
-}
+    Future<void> _handleSignIn() async {
+      final prefs = await SharedPreferences.getInstance();
+      try {
+        await _googleSignIn.signIn().then((value) async {
+          print(value?.displayName);
 
-class _GoogleButtonState extends State<GoogleButton> {
-  @override
-  bool _isLoggedIn = false;
-  late GoogleSignInAccount _userObj;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+          Response response = await SignupService().googlesignin(
+              value?.displayName,
+              value?.email,
+              value?.photoUrl,
+              'Google',
+              'Google');
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          (OutlinedButton(
-              onPressed: () {
-                _googleSignIn.signOut().then((value) {
-                  setState(() {
-                    _isLoggedIn = false;
-                  });
-                }).catchError((e) {
-                  print(e);
-                });
-                _googleSignIn.signIn().then((userData) {
-                  setState(() async {
-                    _isLoggedIn = true;
-                    _userObj = userData!;
-                    final prefs = await SharedPreferences.getInstance();
-                    Response response = await SignupService().googlesignin(
-                        _userObj.displayName,
-                        _userObj.email,
-                        _userObj.photoUrl,
-                        'Google Sign-in',
-                        'Google');
+          if (response.data['status'] == 'ok') {
+            signinError = '';
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                duration: Duration(milliseconds: 500),
+                content: Text(
+                  'Signing in',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
 
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      duration: Duration(milliseconds: 500),
-                      content: Text(
-                        'Signing in',
-                        textAlign: TextAlign.center,
+            await prefs.setString('emailAddress', response.data['value']);
+
+            //RESET TOKEN ON LOGOUT
+            Timer(
+                const Duration(seconds: 1),
+                () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: ((context) => const Home()),
                       ),
                     ));
+          } else {
+            setState(() {
+              signinError = response.data['value'];
+            });
+          }
+        });
+      } on PlatformException catch (error) {
+        print(error);
+        return;
+      }
+    }
 
-                    // if (response.data['status'] == 'ok') {
-                    //   await prefs.setString(
-                    //       'emailAddress', response.data['value']);
-                    // }
-                  });
-                }).catchError((e) {
-                  print(e);
-                });
-              },
-              style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.grey)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  const Text(
-                    'SIGN IN WITH GOOGLE',
-                    style: TextStyle(color: Colors.grey),
-                  )
-                ],
-              ))),
-        ],
-      ),
+    return Container(
+      width: double.infinity,
+      child: ElevatedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.white,
+          ),
+          onPressed: () {
+            _handleSignIn();
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(
+                MyFlutterApp.google,
+                color: Colors.blue,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'SIGN IN WITH GOOGLE',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
+/**
+ 
+ */
+// class GoogleButton extends StatefulWidget {
+//   const GoogleButton({Key? key}) : super(key: key);
+
+//   @override
+//   _GoogleButtonState createState() => _GoogleButtonState();
+// }
+
+// class _GoogleButtonState extends State<GoogleButton> {
+//   @override
+//   late GoogleSignInAccount _userObj;
+//   final GoogleSignIn _googleSignIn = GoogleSignIn();
+//   String err = '';
+//   String? name = '';
+//   String? email = '';
+//   String? pic = '';
+//   String? test = 'test';
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child: Column(
+//         children: [
+//           Text(err),
+//           Text(
+//             name as String,
+//             style: TextStyle(color: Colors.black),
+//           ),
+//           Text(email as String, style: TextStyle(color: Colors.black)),
+//           Text(pic as String, style: TextStyle(color: Colors.black)),
+//           Text(test as String, style: TextStyle(color: Colors.black)),
+//           (OutlinedButton(
+//               onPressed: () {
+//                 _googleSignIn.signOut().then((userData) async {
+//                   _userObj = userData!;
+//                   final prefs = await SharedPreferences.getInstance();
+//                   setState(() {});
+//                   Response response = await SignupService().googlesignin(
+//                       _userObj.displayName,
+//                       _userObj.email,
+//                       _userObj.photoUrl,
+//                       'Google Sign-in',
+//                       'Google');
+//                   setState(() {
+//                     name = _userObj.displayName;
+//                     email = _userObj.email;
+//                     pic = _userObj.photoUrl;
+//                     test = 'test1';
+//                   });
+
+//                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//                     duration: Duration(milliseconds: 500),
+//                     content: Text(
+//                       'Signing in',
+//                       textAlign: TextAlign.center,
+//                     ),
+//                   ));
+
+//                   if (response.data['status'] == 'ok') {
+//                     await prefs.setString(
+//                         'emailAddress', response.data['value']);
+//                   }
+
+//                   Timer(
+//                       const Duration(seconds: 1),
+//                       () => Navigator.pushReplacement(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: ((context) => const Home()),
+//                             ),
+//                           ));
+//                 }).catchError((e) {
+//                   setState(() {
+//                     err = e;
+//                   });
+//                   print(e);
+//                 });
+//                 _googleSignIn.signIn().then((userData) async {
+//                   _userObj = userData!;
+//                   final prefs = await SharedPreferences.getInstance();
+
+//                   Response response = await SignupService().googlesignin(
+//                       _userObj.displayName,
+//                       _userObj.email,
+//                       _userObj.photoUrl,
+//                       'Google Sign-in',
+//                       'Google');
+//                   setState(() {
+//                     name = _userObj.displayName;
+//                     email = _userObj.email;
+//                     pic = _userObj.photoUrl;
+//                     test = 'test2';
+//                   });
+//                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//                     duration: Duration(milliseconds: 500),
+//                     content: Text(
+//                       'Signing in',
+//                       textAlign: TextAlign.center,
+//                     ),
+//                   ));
+
+//                   if (response.data['status'] == 'ok') {
+//                     await prefs.setString(
+//                         'emailAddress', response.data['value']);
+//                   }
+
+//                   Timer(
+//                       const Duration(seconds: 1),
+//                       () => Navigator.pushReplacement(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: ((context) => const Home()),
+//                             ),
+//                           ));
+//                 }).catchError((e) {
+//                   setState(() {
+//                     err = e;
+//                   });
+//                   print(e);
+//                 });
+//               },
+//               style: OutlinedButton.styleFrom(
+//                   side: const BorderSide(color: Colors.grey)),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 // ignore: prefer_const_literals_to_create_immutables
+//                 children: [
+//                   const SizedBox(
+//                     width: 10.0,
+//                   ),
+//                   const Text(
+//                     'SIGN IN WITH GOOGLE',
+//                     style: TextStyle(color: Colors.grey),
+//                   )
+//                 ],
+//               ))),
+//         ],
+//       ),
+//     );
+//   }
+// }
