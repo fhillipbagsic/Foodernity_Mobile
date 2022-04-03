@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.food_bank_rounded), label: 'Announcements'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.announcement_rounded),
+                icon: Icon(Icons.campaign_rounded),
                 label: 'Call For Donations'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle), label: 'Account'),
