@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:foodernity_mobile/Classes/CallForDonation.dart';
 import 'package:foodernity_mobile/Pages/MakeDonation/Guidelines.dart';
 import 'package:sizer/sizer.dart';
@@ -13,6 +14,7 @@ class CallForDonationDetail extends StatefulWidget {
 }
 
 class _CallForDonationDetailState extends State<CallForDonationDetail> {
+  bool _showFab = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,37 +22,59 @@ class _CallForDonationDetailState extends State<CallForDonationDetail> {
         middle: Text('Call for Donation Details'),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _image(widget.item.image),
-              SizedBox(
-                height: 2.h,
-              ),
-              _title(widget.item.title),
+        child: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            final ScrollDirection direction = notification.direction;
+            setState(() {
+              if (direction == ScrollDirection.reverse) {
+                _showFab = false;
+              } else if (direction == ScrollDirection.forward) {
+                _showFab = true;
+              }
+            });
+            return true;
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _image(widget.item.image),
+                SizedBox(
+                  height: 2.h,
+                ),
+                _title(widget.item.title),
 
-              SizedBox(
-                height: 1.h,
-              ),
-              _beneficiaries(widget.item.beneficiaries),
-              SizedBox(
-                height: 2.h,
-              ),
-              _remarks(widget.item.remarks),
-              // _donateButton()
-            ],
+                SizedBox(
+                  height: 1.h,
+                ),
+                _beneficiaries(widget.item.beneficiaries),
+                SizedBox(
+                  height: 2.h,
+                ),
+                _remarks(widget.item.remarks),
+                // _donateButton()
+              ],
+            ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: ((context) => Guidelines(donatedTo: widget.item.id)),
-              ),
-            )),
-        child: const Icon(Icons.volunteer_activism_rounded),
+      floatingActionButton: AnimatedSlide(
+        duration: const Duration(milliseconds: 300),
+        offset: _showFab ? Offset.zero : const Offset(0, 2),
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 300),
+          opacity: _showFab ? 1 : 0,
+          child: FloatingActionButton(
+            onPressed: (() => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) =>
+                        Guidelines(donatedTo: widget.item.id)),
+                  ),
+                )),
+            child: const Icon(Icons.volunteer_activism_rounded),
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

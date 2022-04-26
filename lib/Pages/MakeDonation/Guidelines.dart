@@ -17,21 +17,7 @@ class Guidelines extends StatefulWidget {
 
 class _GuidelinesState extends State<Guidelines> {
   late Future<bool> futureGuidelines;
-  final List<Item> _guidelines = [
-    // Item(
-    //     expandedValue:
-    //         'Non-perishable goods:\nCanned Goods\nInstant Noodles\nEggs\nRice\nCereals\nTea/Coffee/Milk/Sugar\nBiscuits\nSnacks\nCondiments and Sauces\nBeverages',
-    //     headerValue: 'Donations that are allowed to be donated:',
-    //     subtitleValue: ''),
-    // Item(
-    //     expandedValue: 'Perishable goods:\nRaw meat\nAny kind of cooked foods',
-    //     headerValue: 'Donations that are not allowed to be donated:',
-    //     subtitleValue: ''),
-    // Item(
-    //     expandedValue: 'Address',
-    //     headerValue: 'Where to donate:',
-    //     subtitleValue: '')
-  ];
+  final List<Item> _guidelines = [];
 
   @override
   void initState() {
@@ -43,7 +29,7 @@ class _GuidelinesState extends State<Guidelines> {
     Response response = await FAQGuidelineService().getGuidelines();
     for (var i = 0; i < response.data['value'].length; i++) {
       var guideline = Guideline.fromJSON(response.data['value'][i]);
-      print(guideline);
+
       _guidelines.add(Item(
           expandedValue: guideline.description,
           headerValue: guideline.guideline,

@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodernity_mobile/Pages/Home.dart';
+import 'package:foodernity_mobile/Pages/MakeDonation/Donated.dart';
 import 'package:foodernity_mobile/Pages/Signinup/Signin.dart';
 import 'package:foodernity_mobile/Pages/SplashScreen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-const String URL = 'http://localhost:3001/';
-// const String URL = 'http://foodernity-server.herokuapp.com/';
+// const String URL = 'http://localhost:3001/';
+const String URL = 'http://foodernity-server.herokuapp.com/';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

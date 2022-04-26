@@ -293,6 +293,9 @@ class _SigninState extends State<Signin> {
           }
         });
       } on PlatformException catch (error) {
+        setState(() {
+          signinError = error.message as String;
+        });
         print(error);
         return;
       }

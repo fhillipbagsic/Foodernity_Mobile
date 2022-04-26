@@ -213,7 +213,6 @@ class _SignupState extends State<Signup> {
       response = await SignupService().signup(fullNameController.text,
           emailAddressController.text, passwordController.text, 'default');
 
-      print(response.data);
       if (response.data['status'] == 'error') {
         signupError = response.data['value'];
       } else {
@@ -227,7 +226,7 @@ class _SignupState extends State<Signup> {
             ),
           ),
         );
-        Timer(const Duration(seconds: 1), () => Navigator.pop(context));
+        Timer(const Duration(milliseconds: 500), () => Navigator.pop(context));
       }
       setState(() {});
     }
